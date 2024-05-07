@@ -259,11 +259,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Marco\Source\repos\dominio\dominio.csproj">
-      <Project>{383d8ba1-9b0f-4a34-b617-890e037a4028}</Project>
+      <Project>{568b3aa8-3ff9-4e34-b67a-6baf6b8fef37}</Project>
       <Name>dominio</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Marco\Source\repos\negocio\negocio.csproj">
-      <Project>{e7f35c36-37cd-46ba-8491-e1925e4ff199}</Project>
+      <Project>{768e312c-2a71-495c-b17c-2f6219f1bf46}</Project>
       <Name>negocio</Name>
     </ProjectReference>
   </ItemGroup>
