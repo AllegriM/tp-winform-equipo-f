@@ -257,16 +257,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Marco\Source\repos\dominio\dominio.csproj">
-      <Project>{568b3aa8-3ff9-4e34-b67a-6baf6b8fef37}</Project>
-      <Name>dominio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Marco\Source\repos\negocio\negocio.csproj">
-      <Project>{768e312c-2a71-495c-b17c-2f6219f1bf46}</Project>
-      <Name>negocio</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
