@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using negocio;
 
 namespace TPWinForm_equipo_f
 {
@@ -11,7 +12,9 @@ namespace TPWinForm_equipo_f
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            ArticuloService negocio = new ArticuloService();
+            dgvArticulos.DataSource = negocio.ListarArticulos();
+            dgvArticulos.DataBind();
         }
     }
 }
