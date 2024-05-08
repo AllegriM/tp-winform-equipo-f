@@ -4,18 +4,22 @@
 
     <main>
          <h1>CARRITO DE COMPRAS</h1>
-        <asp:GridView ID="dgvArticulos" runat="server" AutoGenerateColumns="false">
-            <Columns>
-                <asp:BoundField HeaderText="ID" DataField="ID"/>
-                <asp:BoundField HeaderText="CODIGO" DataField="CODIGO" />
-                <asp:BoundField HeaderText="NOMBRE" DataField="NOMBRE" />
-                <asp:BoundField HeaderText="DESCRIPCION" DataField="DESCRIPCION" />
-                <asp:BoundField HeaderText="IMAGENES" DataField="IMAGEN.url" />
-                <asp:BoundField HeaderText="CATEGORIA" DataField="CATEGORIA.descripcion" />
-                <asp:BoundField HeaderText="MARCA" DataField="MARCA.Descripcion" />
-                <asp:BoundField HeaderText="PRECIO" DataField="PRECIO" />
-            </Columns>
-        </asp:GridView>
+        <div class="row row-cols-1 row-cols-md-2 gap-4">
+            <%
+                foreach (dominio.Articulo articulo in listaArticulos)
+                {%>
+                    <a href="Detalle.aspx?id=<%: articulo.ID%>" class="card" style="width: 18rem;">
+                      <img class="card-img-top img-fluid" src="<%: articulo.IMAGEN.Url %>" alt="<%: articulo.NOMBRE %>" style="min-height: 265px;" onerror="this.src='https://images-ext-1.discordapp.net/external/aJ-cg0DJZH6L3siM3fYasS5RjwV7L9keSrrxF2nQgiA/https/img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg?format=webp&width=782&height=587';"> 
+                      <div class="card-body">
+                        <h5 class="card-title"><%:articulo.NOMBRE%></h5>
+                        
+                      </div>
+                    </a>
+                <%}
+            %> 
+        </div>
+        
+        
     </main>
 
 </asp:Content>
