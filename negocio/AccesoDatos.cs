@@ -37,6 +37,14 @@ namespace negocio
             }
         }
 
+        public void limpiarParametros()
+        {
+            if (comando != null)
+            {
+                comando.Parameters.Clear();
+            }
+        }
+
         public void setearConsulta(string consulta)
         {
             comando.CommandType = System.Data.CommandType.Text;
@@ -49,6 +57,7 @@ namespace negocio
             try
             {
                 conexion.Open();
+                lector = null;
                 comando.ExecuteNonQuery();
             }
             catch (Exception ex)

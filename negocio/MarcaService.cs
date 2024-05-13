@@ -9,10 +9,11 @@ namespace negocio
 {
     public class MarcaService
     {
+        AccesoDatos datos = new AccesoDatos();
+
         public List<Marca> listar()
         {
             List<Marca> lista = new List<Marca>();
-            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta("SELECT Id, Descripcion FROM MARCAS");
@@ -40,6 +41,36 @@ namespace negocio
             {
                 datos.cerrarConexion();
             }
+        }
+
+        public Marca listarXID(int id)
+        {
+            Marca marca = new Marca();
+
+            try
+            {
+                datos.limpiarParametros();
+                datos.setearConsulta("select Descripcion from Marcas where Id = @Id");
+                datos.setearParametro("@Id", id);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    marca.Id = id;
+
+                    marca.Descripcion = datos.Lector["Descripcion"]?.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return marca;
         }
 
         public void agregarMarca(Marca marca)

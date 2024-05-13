@@ -16,7 +16,6 @@ namespace TPWinForm_equipo_f
         {
             ArticuloService negocio = new ArticuloService();
             listaArticulos = negocio.ListarArticulos();
-            
         }
     }
 }

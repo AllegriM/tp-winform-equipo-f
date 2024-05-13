@@ -15,9 +15,24 @@ namespace TPWinForm_equipo_f
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int id = int.Parse(Request.QueryString["ID"]);
-            ArticuloService negocio = new ArticuloService();
-            detalleArticulo = negocio.listarArticuloXID(id);
+            int id;
+            if (int.TryParse(Request.QueryString["ID"], out id))
+            {
+                ArticuloService negocio = new ArticuloService();
+                detalleArticulo = negocio.listarArticuloXID(id);
+                if (detalleArticulo != null)
+                {
+                    detalleArticulo.CantidadImagenes = detalleArticulo.IMAGEN.Count;
+                }
+                if (detalleArticulo == null)
+                {
+                    Response.Redirect("~/Error.aspx");
+                }
+            }
+            else
+            {
+                Response.Write("ID de artículo no válido.");
+            };
         }
     }
 }

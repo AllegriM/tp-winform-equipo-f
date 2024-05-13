@@ -32,10 +32,11 @@ namespace dominio
         public Categoria CATEGORIA { get; set; }
         
         [DisplayName("Imagen")]
-        public Imagen IMAGEN { get; set; }
+        public List<Imagen> IMAGEN { get; set; }
 
         [DisplayName("Precio")]
         public decimal PRECIO { get; set; }
 
+        public int CantidadImagenes { get; set; }
     }
 }

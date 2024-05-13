@@ -8,19 +8,19 @@ using System.Reflection;
 
 using dominio;
 using System.Text.RegularExpressions;
+using System.Security.Policy;
 
 namespace negocio
 {
     public class ArticuloService
     {
-        private List<Articulo> _listaArticulos;
-        public ArticuloService()
-        {
-            _listaArticulos = new List<Articulo>();
-        }
+        private AccesoDatos datos = new AccesoDatos();
+        private CategoriaService categoriaService = new CategoriaService();
+        private MarcaService marcaService = new MarcaService();
+        private ImagenService imagenService = new ImagenService();
+
         public void agregar(Articulo art)
         {
-            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion,IdMarca, IdCategoria, Precio) VALUES (@codigo, @nombre, @descripcion, @idMarca, @idCategoria, @precio)");
@@ -45,7 +45,7 @@ namespace negocio
                 {
                     datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@idArticulo, @imagenUrl)");
                     datos.setearParametro("@idArticulo", nuevoId);
-                    datos.setearParametro("@imagenUrl", art.IMAGEN.Url);
+                    datos.setearParametro("@imagenUrl", art.IMAGEN.Last().Url);
                     datos.ejecutarAccion();
                 }
             }
@@ -61,7 +61,6 @@ namespace negocio
         // ver el tema de las catagoria y marca
         public void modificar(Articulo art)
         {
-            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta("UPDATE ARTICULOS SET CODIGO = @codigo, NOMBRE = @nombre, DESCRIPCION = @descripcion, IdMarca =@idMarca, IdCategoria=@idCategoria ,PRECIO = @precio WHERE ID = @id");
@@ -77,7 +76,7 @@ namespace negocio
                 if (art.IMAGEN != null)
                 {
                     datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl = @imagenUrl WHERE IdArticulo = @id");
-                    datos.setearParametro("@imagenUrl", art.IMAGEN.Url);
+                    datos.setearParametro("@imagenUrl", art.IMAGEN[0].Url);
                     datos.setearParametro("@idArticulo", art.ID);
                     datos.ejecutarAccion();
                 }
@@ -94,7 +93,6 @@ namespace negocio
 
         public void eliminarArticulo(int id)
         {
-            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta("DELETE FROM ARTICULOS WHERE Id = @id");
@@ -115,30 +113,27 @@ namespace negocio
         public List<Articulo> ListarArticulos()
         {
             List<Articulo> lista = new List<Articulo>();
-            AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.Precio, M.Descripcion AS Marca, C.Descripcion AS Categoria, STRING_AGG(I.ImagenUrl, ', ') AS Imagenes FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo GROUP BY A.Id, A.Codigo, A.Nombre, A.Descripcion, A.Precio, M.Descripcion, C.Descripcion;");
+                datos.setearConsulta("select Id, Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio from Articulos");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Articulo aux = new Articulo();
-                    aux.ID = Convert.ToInt32(datos.Lector["Id"]);
+                    aux.ID = (int)datos.Lector["Id"];
                     if (!(datos.Lector["Codigo"]is DBNull)) aux.CODIGO = (string)datos.Lector["Codigo"];
                     if (!(datos.Lector["Nombre"] is DBNull)) aux.NOMBRE = (string)datos.Lector["Nombre"];
                     if (!(datos.Lector["Descripcion"] is DBNull)) aux.DESCRIPCION = (string)datos.Lector["Descripcion"];
                     if (!(datos.Lector["Precio"] is DBNull)) aux.PRECIO = Math.Truncate(100 * (decimal)datos.Lector["Precio"]) / 100;
                     aux.MARCA = new Marca();
-                    if (!(datos.Lector["Marca"] is DBNull)) aux.MARCA.Descripcion = (string)datos.Lector["Marca"];
+                    if (!(datos.Lector["IdMarca"] is DBNull)) aux.MARCA.Id = datos.Lector["IdMarca"] as int? ?? aux.MARCA.Id;
                     aux.CATEGORIA = new Categoria();
-                    if (!(datos.Lector["Categoria"] is DBNull)) aux.CATEGORIA.Descripcion = (string)datos.Lector["Categoria"];
-                    aux.IMAGEN = new Imagen();
-                    if (!(datos.Lector["Imagenes"] is DBNull)) aux.IMAGEN.Url = (string)datos.Lector["Imagenes"];
+                    if (!(datos.Lector["IdCategoria"] is DBNull))  aux.CATEGORIA.Id = datos.Lector["IdCategoria"] as int? ?? aux.CATEGORIA.Id;
+                    aux.IMAGEN = imagenService.Listar(aux.ID);
 
                     lista.Add(aux);
                 }
-                return lista;
             }
             catch (Exception ex)
             {
@@ -148,6 +143,13 @@ namespace negocio
             {
                 datos.cerrarConexion();
             }
+            foreach (Articulo article in lista)
+            {
+                article.MARCA = marcaService.listarXID(article.MARCA.Id);
+                article.CATEGORIA = categoriaService.listarXID(article.CATEGORIA.Id);
+            }
+
+            return lista;
         }
 
         public Articulo listarArticuloXID(int id)
@@ -180,11 +182,7 @@ namespace negocio
                             Id = Convert.ToInt32(datos.Lector["IdCategoria"]),
                             Descripcion = datos.Lector["CategoriaDescripcion"].ToString()
                         },
-                        IMAGEN = new Imagen
-                        {
-                            Codigo = Convert.ToInt32(datos.Lector["Id"]),
-                            Url = datos.Lector["Imagenes"].ToString()
-                        }
+                        IMAGEN = imagenService.Listar(id)
                     };
                 }
             }

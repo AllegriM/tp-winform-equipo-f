@@ -1,6 +1,7 @@
 ﻿using dominio;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace negocio
 {
     public class CategoriaService
     {
+        AccesoDatos datos = new AccesoDatos();
+
         public List<Categoria> listar()
         {
             List<Categoria> lista = new List<Categoria>();
@@ -39,6 +42,38 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+        public Categoria listarXID(int id)
+        {
+            Categoria categoria = new Categoria();
+
+            try
+            {
+                datos.limpiarParametros();
+
+                datos.setearConsulta("select Descripcion from Categorias where Id = @Id");
+                datos.setearParametro("@Id", id);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    categoria.Id = id;
+
+                    categoria.Descripcion = datos.Lector["Descripcion"]?.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return categoria;
+        }
+
 
         public void agregarCategoria(string descripcion)
         {
