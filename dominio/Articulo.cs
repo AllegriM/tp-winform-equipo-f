@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -36,6 +37,13 @@ namespace dominio
 
         [DisplayName("Precio")]
         public decimal PRECIO { get; set; }
+
+        private int CANTIDAD = 0;
+        public int Cantidad
+        {
+            get { return CANTIDAD; }
+            set { CANTIDAD = value; }
+        } 
 
         public int CantidadImagenes { get; set; }
     }

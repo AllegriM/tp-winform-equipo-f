@@ -3,7 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main>
-         <h1>CARRITO DE COMPRAS</h1>
+         <h1>PRODUCTOS</h1>
         <div class="row row-cols-1 row-cols-md-2 gap-4">
             <%
                 foreach (dominio.Articulo articulo in listaArticulos)
