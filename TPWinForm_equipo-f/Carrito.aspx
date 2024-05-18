@@ -15,8 +15,8 @@
             <asp:BoundField HeaderText="Cantidad" DataField="CANTIDAD" />
             <asp:TemplateField HeaderText="">
                 <ItemTemplate>
-                    <asp:Button ID="btnIncrementar" runat="server" CssClass="btn btn-primary" CommandName="Incrementar" CommandArgument='<%# Eval("ID") %>' Text="+" />
-                    <asp:Button ID="btnDecrementar" runat="server" CssClass="btn btn-primary" CommandName="Decrementar" CommandArgument='<%# Eval("ID") %>' Text="-" />
+                    <asp:Button ID="btnSumar" runat="server" CssClass="btn btn-primary" CommandArgument='<%# Eval("ID") %>' Text="+" OnClick="btnSumar_Click" />
+                    <asp:Button ID="btnRestar" runat="server" CssClass="btn btn-primary" CommandArgument='<%# Eval("ID") %>' Text="-" OnClick="btnRestar_Click"/>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>

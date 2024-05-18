@@ -22,14 +22,63 @@ namespace TPWinForm_equipo_f
                 {
                     listaArticulosEnCarrito = new List<Articulo>();
                 }
-                foreach (Articulo articulo in listaArticulosEnCarrito)
-                {
-                    totalCarrito += (float)(articulo.Cantidad * articulo.PRECIO);
-                }
-                dgvCarrito.DataSource = listaArticulosEnCarrito;
-                dgvCarrito.DataBind();
-
+                ActualizarCarrito();
             }
+        }
+
+        protected void btnSumar_Click(object sender, EventArgs e)
+        {
+            // El objeto "sender" es un boton, se lo asigno al objeto boton local.
+            Button btnIncrementar = (Button)sender;
+
+            // El argumento del boton del dgv es el ID del articulo, utilizo eso para saber que articulo modificar.
+            int articuloID = int.Parse((btnIncrementar.CommandArgument));
+
+            listaArticulosEnCarrito = (List<Articulo>)Session["Carrito"];
+
+            Articulo articuloEnCarrito = listaArticulosEnCarrito.FirstOrDefault(a => a.ID == articuloID);
+
+            if (articuloEnCarrito != null)
+            {
+                articuloEnCarrito.Cantidad++;
+            }
+
+            ActualizarCarrito();
+        }
+
+        protected void btnRestar_Click(object sender, EventArgs e)
+        {
+             // El objeto "sender" es un boton, se lo asigno al objeto boton local.
+             Button btnIncrementar = (Button)sender;
+
+             // El argumento del boton del dgv es el ID del articulo, utilizo eso para saber que articulo modificar.
+             int articuloID = Convert.ToInt32(btnIncrementar.CommandArgument);
+
+             listaArticulosEnCarrito = (List<Articulo>)Session["Carrito"];
+
+             Articulo articuloEnCarrito = listaArticulosEnCarrito.FirstOrDefault(a => a.ID == articuloID);
+
+             if (articuloEnCarrito != null && articuloEnCarrito.Cantidad > 0)
+             {
+                 articuloEnCarrito.Cantidad--;
+                if(articuloEnCarrito.Cantidad==0)
+                {
+                    listaArticulosEnCarrito.Remove(articuloEnCarrito);
+                }
+             }
+
+             ActualizarCarrito();
+        }
+
+        private void ActualizarCarrito()
+        {
+            foreach (Articulo articulo in listaArticulosEnCarrito)
+            {
+                totalCarrito += (float)(articulo.Cantidad * articulo.PRECIO);
+            }
+            dgvCarrito.DataSource = listaArticulosEnCarrito;
+            dgvCarrito.DataBind();
+            Session["Carrito"] = listaArticulosEnCarrito;
         }
     }
 }
