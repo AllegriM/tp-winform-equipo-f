@@ -29,13 +29,50 @@
             <h5 class="card-title"><%:detalleArticulo.NOMBRE %></h5>
             <p>Cantidad de imágenes: <%: detalleArticulo.CantidadImagenes %></p>
             <p class="card-text"><%:detalleArticulo.DESCRIPCION %></p>
-            <%-- <a href="#" class="btn btn-primary">Agregar al carrito</a>--%>
+            <div class="flex-row mb-2">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-field="">
+                          <span class="glyphicon glyphicon-minus">-</span>
+                        </button>
+                    </span>
+                    <input type="number" id="quantity" name="quantity" class="form-control input-number mx-5" value="1" min="1" max="100" runat="server" />
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                            <span class="glyphicon glyphicon-plus">+</span>
+                        </button>
+                    </span>
+                </div>
+            </div>
             <asp:Button ID="btnAgregarCarrito" runat="server" CssClass="btn btn-primary" Text="Agregar al carrito" OnClick="btnAgregarCarrito_Click" />
         </div>
     </div>
     <script>
         $(document).ready(function () {
+            console.log("HELLO");
             $('.carousel').carousel();
+
+            var quantityInput = $('#MainContent_quantity');
+
+            $('.quantity-right-plus').on('click', function (e) {
+                e.preventDefault();
+                var quantity = parseInt(quantityInput.val());
+                if (!isNaN(quantity) && quantity < 100) {
+                    quantityInput.val(quantity + 1);
+                } else {
+                    quantityInput.val(100);
+                }
+            });
+
+            $('.quantity-left-minus').on('click', function (e) {
+                e.preventDefault();
+                var quantity = parseInt(quantityInput.val());
+                if (!isNaN(quantity) && quantity > 1) {
+                    quantityInput.val(quantity - 1);
+                } else {
+                    quantityInput.val(1);
+                }
+            });
         });
     </script>
 </asp:Content>

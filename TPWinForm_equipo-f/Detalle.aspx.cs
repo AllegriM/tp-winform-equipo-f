@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using negocio;
 using dominio;
+using System.Web.UI.HtmlControls;
 
 namespace TPWinForm_equipo_f
 {
@@ -31,7 +32,7 @@ namespace TPWinForm_equipo_f
             }
             else
             {
-                Response.Write("ID de artículo no válido.");
+                Response.Redirect("~/Error.aspx");
             };
         }
 
@@ -39,41 +40,54 @@ namespace TPWinForm_equipo_f
         {
             try
             {
-                // Creo una lista de articulos que estarán en el carrito, en sesión:
-                List<Articulo> carrito = (List<Articulo>)Session["Carrito"];
-
-                if(carrito == null)
+                ContentPlaceHolder contentPlaceHolder = (ContentPlaceHolder)this.Master.FindControl("MainContent");
+                if (contentPlaceHolder != null)
                 {
-                    carrito = new List<Articulo>();
-                }
-
-                // Creo el objeto articulo que estará en el carrito.
-                // Y ,si está en la lista segun su ID, le asigno los valores correspondientes.
-                Articulo articuloEnCarrito = new Articulo();
-
-                articuloEnCarrito = carrito.FirstOrDefault(a => a.ID == detalleArticulo.ID);
-
-                if (articuloEnCarrito == null)
-                {
-                    articuloEnCarrito = new Articulo
+                    HtmlInputControl quantityInput = (HtmlInputControl)contentPlaceHolder.FindControl("quantity");
+                    if (quantityInput != null)
                     {
-                        ID = detalleArticulo.ID,
-                        IMAGEN = detalleArticulo.IMAGEN,
-                        NOMBRE = detalleArticulo.NOMBRE,
-                        PRECIO = detalleArticulo.PRECIO,
-                        Cantidad = 1
-                    };
+                        int cantidadArticulos = int.Parse(quantityInput.Value);
 
-                    carrito.Add(articuloEnCarrito);
+                        List<Articulo> carrito = (List<Articulo>)Session["Carrito"];
+
+                        if (carrito == null)
+                        {
+                            carrito = new List<Articulo>();
+                        }
+
+                        Articulo articuloEnCarrito = carrito.FirstOrDefault(a => a.ID == detalleArticulo.ID);
+
+                        if (articuloEnCarrito == null)
+                        {
+                            articuloEnCarrito = new Articulo
+                            {
+                                ID = detalleArticulo.ID,
+                                IMAGEN = detalleArticulo.IMAGEN,
+                                NOMBRE = detalleArticulo.NOMBRE,
+                                PRECIO = detalleArticulo.PRECIO,
+                                Cantidad = cantidadArticulos
+                            };
+
+                            carrito.Add(articuloEnCarrito);
+                        }
+                        else
+                        {
+                            articuloEnCarrito.Cantidad += cantidadArticulos;
+                        }
+
+                        Session["Carrito"] = carrito;
+
+                        Response.Redirect("Carrito.aspx");
+                    }
+                    else
+                    {
+                        Response.Write("No se pudo encontrar el campo de cantidad.");
+                    }
                 }
-                else 
+                else
                 {
-                    articuloEnCarrito.Cantidad++;
+                    Response.Write("No se pudo encontrar el contenedor de contenido principal.");
                 }
-
-                Session["Carrito"] = carrito;
-
-                Response.Redirect("Carrito.aspx");
             }
             catch (Exception ex)
             {

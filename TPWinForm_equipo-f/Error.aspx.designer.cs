@@ -11,25 +11,16 @@ namespace TPWinForm_equipo_f
 {
 
 
-    public partial class Detalle
+    public partial class Error
     {
 
         /// <summary>
-        /// Control quantity.
+        /// Control form1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl quantity;
-
-        /// <summary>
-        /// Control btnAgregarCarrito.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarCarrito;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
     }
 }
