@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Carrito</h1>
     <hr />
-    <asp:GridView ID="dgvCarrito" runat="server" CssClass="table" AutoGenerateColumns="false">
+    <asp:GridView ID="dgvCarrito" runat="server" CssClass="table table-hover" AutoGenerateColumns="false">
         <Columns>
             <asp:TemplateField HeaderText="Imagen">
                 <ItemTemplate>
@@ -17,6 +17,7 @@
                 <ItemTemplate>
                     <asp:Button ID="btnSumar" runat="server" CssClass="btn btn-primary" CommandArgument='<%# Eval("ID") %>' Text="+" OnClick="btnSumar_Click" />
                     <asp:Button ID="btnRestar" runat="server" CssClass="btn btn-primary" CommandArgument='<%# Eval("ID") %>' Text="-" OnClick="btnRestar_Click"/>
+                    <asp:Button ID="btnEliminarArticulo" runat="server" CssClass="btn-close" CommandArgument='<%# Eval("ID") %>' OnClick="btnEliminarArticulo_Click"/>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>

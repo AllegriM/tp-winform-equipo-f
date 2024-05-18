@@ -92,5 +92,22 @@ namespace TPWinForm_equipo_f
 
             ActualizarCarrito();
         }
+
+        protected void btnEliminarArticulo_Click(object sender, EventArgs e)
+        {
+            // El objeto "sender" es un boton, se lo asigno al objeto boton local.
+            Button btnIncrementar = (Button)sender;
+
+            // El argumento del boton del dgv es el ID del articulo, utilizo eso para saber que articulo modificar.
+            int articuloID = Convert.ToInt32(btnIncrementar.CommandArgument);
+
+            listaArticulosEnCarrito = (List<Articulo>)Session["Carrito"];
+
+            Articulo articuloEnCarrito = listaArticulosEnCarrito.FirstOrDefault(a => a.ID == articuloID);
+
+            listaArticulosEnCarrito.Remove(articuloEnCarrito);
+             
+            ActualizarCarrito();
+        }
     }
 }
