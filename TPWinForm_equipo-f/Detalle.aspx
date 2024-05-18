@@ -29,7 +29,8 @@
             <h5 class="card-title"><%:detalleArticulo.NOMBRE %></h5>
             <p>Cantidad de imágenes: <%: detalleArticulo.CantidadImagenes %></p>
             <p class="card-text"><%:detalleArticulo.DESCRIPCION %></p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+            <%-- <a href="#" class="btn btn-primary">Agregar al carrito</a>--%>
+            <asp:Button ID="btnAgregarCarrito" runat="server" CssClass="btn btn-primary" Text="Agregar al carrito" OnClick="btnAgregarCarrito_Click" />
         </div>
     </div>
     <script>

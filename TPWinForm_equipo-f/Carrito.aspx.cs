@@ -14,10 +14,16 @@ namespace TPWinForm_equipo_f
         List<Articulo> listaArticulosEnCarrito = new List<Articulo>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            ArticuloService negocio = new ArticuloService();
-            listaArticulosEnCarrito=negocio.ListarArticulos();
-            dgvCarrito.DataSource = listaArticulosEnCarrito;
-            dgvCarrito.DataBind();
+            if (!IsPostBack)
+            {
+                listaArticulosEnCarrito = (List<Articulo>)Session["Carrito"];
+                if (listaArticulosEnCarrito == null)
+                {
+                    listaArticulosEnCarrito = new List<Articulo>();
+                }
+                dgvCarrito.DataSource = listaArticulosEnCarrito;
+                dgvCarrito.DataBind();
+            }
         }
     }
 }
