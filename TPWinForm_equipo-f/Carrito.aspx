@@ -22,4 +22,5 @@
         </Columns>
     </asp:GridView>
     <p class="text-end">TOTAL: $<%: totalCarrito %> </p>
+    <asp:Button ID="btnVaciarCarrito" runat="server" CssClass="btn btn-outline-primary" Text="Vaciar carrito" OnClick="btnVaciarCarrito_Click"/>
 </asp:Content>

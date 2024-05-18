@@ -80,5 +80,17 @@ namespace TPWinForm_equipo_f
             dgvCarrito.DataBind();
             Session["Carrito"] = listaArticulosEnCarrito;
         }
+
+        protected void btnVaciarCarrito_Click(object sender, EventArgs e)
+        {
+            listaArticulosEnCarrito = (List<Articulo>)Session["Carrito"];
+
+            if(listaArticulosEnCarrito!=null)
+            {
+                listaArticulosEnCarrito.Clear();
+            }
+
+            ActualizarCarrito();
+        }
     }
 }
