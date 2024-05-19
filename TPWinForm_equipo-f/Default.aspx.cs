@@ -12,15 +12,42 @@ namespace TPWinForm_equipo_f
     public partial class _Default : Page
     {
         public List<Articulo> listaArticulos = new List<Articulo>();
+        public List<Categoria> listaCategorias = new List<Categoria>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                CategoriaService categoriaService = new CategoriaService();
                 ArticuloService negocio = new ArticuloService();
                 listaArticulos = negocio.ListarArticulos();
+                listaCategorias = categoriaService.listar();
                 Session["Articulos"] = listaArticulos;
+                Session["Categorias"] = listaCategorias;  // Save categories to session for later use
+                categoria.DataSource = listaCategorias;
+                categoria.DataTextField = "Descripcion";
+                categoria.DataValueField = "Id";
+                categoria.DataBind();
+                categoria.Items.Insert(0, new ListItem("Todos", "todos")); // Add "Todos" option
                 MostrarArticulos(listaArticulos);
             }
+        }
+
+        protected void SelectCategoria(object sender, EventArgs e)
+        {
+            listaArticulos = (List<Articulo>)Session["Articulos"];
+            string selectedCategory = categoria.SelectedValue;
+
+            List<Articulo> listaArticulosFiltrados;
+            if (selectedCategory == "todos")
+            {
+                listaArticulosFiltrados = listaArticulos;
+            }
+            else
+            {
+                listaArticulosFiltrados = listaArticulos.Where(a => a.CATEGORIA.Id.ToString() == selectedCategory).ToList();
+            }
+
+            MostrarArticulos(listaArticulosFiltrados);
         }
 
         protected void txtBuscador_TextChanged(object sender, EventArgs e)

@@ -49,7 +49,6 @@
     </div>
     <script>
         $(document).ready(function () {
-            console.log("HELLO");
             $('.carousel').carousel();
 
             var quantityInput = $('#MainContent_quantity');

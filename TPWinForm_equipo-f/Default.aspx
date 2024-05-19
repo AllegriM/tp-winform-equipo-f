@@ -6,6 +6,8 @@
         <div class="input-group">
             <asp:Label ID="Label1" runat="server" CssClass="input-group-text">Buscador: </asp:Label>
             <asp:TextBox ID="txtBuscador" runat="server" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtBuscador_TextChanged" type="text"></asp:TextBox>
+            <asp:DropDownList ID="categoria" runat="server" CssClass="ms-auto border ps-2" AutoPostBack="true" OnSelectedIndexChanged="SelectCategoria">
+            </asp:DropDownList>
         </div>
         <hr />
         <div class="row row-cols-1 row-cols-md-2 gap-4">
@@ -23,4 +25,3 @@
         </div>
     </main>
 </asp:Content>
-
