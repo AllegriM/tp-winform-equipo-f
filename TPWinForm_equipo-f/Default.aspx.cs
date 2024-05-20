@@ -67,7 +67,7 @@ namespace TPWinForm_equipo_f
             string selectedMarca = marca.SelectedValue;
 
             List<Articulo> listaArticulosFiltrados;
-            if (selectedMarca == "") // Si se selecciona "Todas las marcas"
+            if (selectedMarca == "todas") // Si se selecciona "Todas las marcas"
             {
                 listaArticulosFiltrados = listaArticulos;
             }
@@ -97,5 +97,7 @@ namespace TPWinForm_equipo_f
             rptArticulos.DataSource = listaArticulos;
             rptArticulos.DataBind();
         }
+
     }
+
 }

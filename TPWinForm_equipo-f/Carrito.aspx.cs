@@ -41,6 +41,7 @@ namespace TPWinForm_equipo_f
             if (articuloEnCarrito != null)
             {
                 articuloEnCarrito.Cantidad++;
+
             }
 
             ActualizarCarrito();

@@ -9,7 +9,7 @@
             <asp:DropDownList ID="categoria" runat="server" CssClass="ms-auto border ps-2" AutoPostBack="true" OnSelectedIndexChanged="SelectCategoria">
             </asp:DropDownList>
             <asp:DropDownList ID="marca" runat="server" CssClass="ms-auto border ps-2" AutoPostBack="true" OnSelectedIndexChanged="SelectMarca">
-            </asp:DropDownList>
+</asp:DropDownList>
         </div>
         <hr />
         <div class="row row-cols-1 row-cols-md-2 gap-4">
