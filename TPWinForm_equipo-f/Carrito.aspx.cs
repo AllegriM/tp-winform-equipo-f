@@ -40,7 +40,15 @@ namespace TPWinForm_equipo_f
 
             if (articuloEnCarrito != null)
             {
-                articuloEnCarrito.Cantidad++;
+                if(articuloEnCarrito.Cantidad < articuloEnCarrito.CantidadImagenes)
+                {
+                    articuloEnCarrito.Cantidad++;
+                }
+                else
+                {
+                    Response.Write("La cantidad de artículos a agregar excede la cantidad disponible.");
+                }
+                
 
             }
 
