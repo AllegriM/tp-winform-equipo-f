@@ -48,36 +48,45 @@ namespace TPWinForm_equipo_f
                     {
                         int cantidadArticulos = int.Parse(quantityInput.Value);
 
-                        List<Articulo> carrito = (List<Articulo>)Session["Carrito"];
-
-                        if (carrito == null)
+                        // Verificar si la cantidad de artículos a agregar es menor que la cantidad de imágenes disponibles
+                        if (cantidadArticulos <= detalleArticulo.CantidadImagenes)
                         {
-                            carrito = new List<Articulo>();
-                        }
+                            List<Articulo> carrito = (List<Articulo>)Session["Carrito"];
 
-                        Articulo articuloEnCarrito = carrito.FirstOrDefault(a => a.ID == detalleArticulo.ID);
-
-                        if (articuloEnCarrito == null)
-                        {
-                            articuloEnCarrito = new Articulo
+                            if (carrito == null)
                             {
-                                ID = detalleArticulo.ID,
-                                IMAGEN = detalleArticulo.IMAGEN,
-                                NOMBRE = detalleArticulo.NOMBRE,
-                                PRECIO = detalleArticulo.PRECIO,
-                                Cantidad = cantidadArticulos
-                            };
+                                carrito = new List<Articulo>();
+                            }
 
-                            carrito.Add(articuloEnCarrito);
+                            Articulo articuloEnCarrito = carrito.FirstOrDefault(a => a.ID == detalleArticulo.ID);
+
+                            if (articuloEnCarrito == null)
+                            {
+                                articuloEnCarrito = new Articulo
+                                {
+                                    ID = detalleArticulo.ID,
+                                    IMAGEN = detalleArticulo.IMAGEN,
+                                    NOMBRE = detalleArticulo.NOMBRE,
+                                    PRECIO = detalleArticulo.PRECIO,
+                                    Cantidad = cantidadArticulos
+                                };
+
+                                carrito.Add(articuloEnCarrito);
+                            }
+                            else
+                            {
+                                articuloEnCarrito.Cantidad += cantidadArticulos;
+                            }
+
+                            Session["Carrito"] = carrito;
+
+                            Response.Redirect("Carrito.aspx");
                         }
                         else
                         {
-                            articuloEnCarrito.Cantidad += cantidadArticulos;
+                            // Mostrar mensaje de error si la cantidad de artículos a agregar es mayor que la cantidad de imágenes disponibles
+                            Response.Write("La cantidad de artículos a agregar excede la cantidad disponible.");
                         }
-
-                        Session["Carrito"] = carrito;
-
-                        Response.Redirect("Carrito.aspx");
                     }
                     else
                     {
@@ -91,7 +100,6 @@ namespace TPWinForm_equipo_f
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
